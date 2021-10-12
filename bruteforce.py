@@ -24,7 +24,6 @@ def force_brut():
         list_matrix = list_action * list_binary
 
         for i in list_calcul_benef:
-            #print(i)
             sum_of_profits = sum(i)
             list_rez_sorted.append(sum_of_profits)
             action_value = list()
@@ -32,15 +31,11 @@ def force_brut():
                 if elem != 0.0:
                     action_value.append(list_action[key])
                     dict_profit_and_action_name.update({sum_of_profits: action_value})
-        #best_profit =(sorted(dict_profit_and_action_name.items(), key=lambda t:t[0], reverse=True))
-        #print(best_profit)
 
 def calcul_action_value():
 
     for  elem in dict_profit_and_action_name.items()  :
-        #print(elem[0],"zeaeae")
         actions_value = sum(elem[1])
-        #print(actions_value)
         jojo.append([elem[0], elem[1], actions_value])
 
 
@@ -61,13 +56,6 @@ def best_combination():
     print("Pour un total de :", best_profit[0][2], "€", "les actions les plus rentables sont :", best, "pour un bénéfice de :", best_profit[0][0])
 
 
-"""
-            for i in elem[1]:
-                for key, action in enumerate(list_action):
-                    if i == action:
-                        
-                        print(i, list_action_name[key])
-"""
 
 force_brut()
 calcul_action_value()
