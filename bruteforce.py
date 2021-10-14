@@ -1,6 +1,6 @@
 import numpy as np
 import itertools
-
+import time
 
 list_action = np.array([20, 30, 50, 70, 60, 80, 22, 26, 48, 34, 42, 110, 38, 14, 18, 8, 4, 10, 24, 114]) #])#
 list_pourcentage =  np.array([0.05, 0.2, 0.15, 0.2, 0.17, 0.25, 0.07, 0.11, 0.13, 0.27, 0.17, 0.09, 0.23, 0.01, 0.03, 0.08, 0.12, 0.14, 0.21, 0.18])
@@ -27,14 +27,18 @@ def force_brut():
             sum_of_profits = sum(i)
             list_rez_sorted.append(sum_of_profits)
             action_value = list()
+            
             for key, elem in enumerate(i):
                 if elem != 0.0:
                     action_value.append(list_action[key])
                     dict_profit_and_action_name.update({sum_of_profits: action_value})
-
+    #print(dict_profit_and_action_name)
+    #print(list_rez_sorted)
+    #print(dict_profit_and_action_name)
 def calcul_action_value():
 
     for  elem in dict_profit_and_action_name.items()  :
+        #print(elem, elem[1])
         actions_value = sum(elem[1])
         jojo.append([elem[0], elem[1], actions_value])
 
@@ -43,6 +47,7 @@ def calcul_action_value():
 def best_combination():
     test = list()
     actions_value_sorted =(sorted(jojo, key=lambda t:t[2], reverse=True))
+
     for elem in actions_value_sorted:
         if elem[2] <= 500:
             test.append(elem)
@@ -56,8 +61,8 @@ def best_combination():
     print("Pour un total de :", best_profit[0][2], "€", "les actions les plus rentables sont :", best, "pour un bénéfice de :", best_profit[0][0])
 
 
-
+start_time = time.time()
 force_brut()
 calcul_action_value()
 best_combination()
-
+print("--- %s seconds ---" % (time.time() - start_time))
