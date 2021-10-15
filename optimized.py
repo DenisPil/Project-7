@@ -35,7 +35,7 @@ start_time = time.time()
 Création des listes:
 name = le nom des actions
 action_value = la valeur des actions
-benefit = le bénéfice attendu part action 
+benefit = le bénéfice attendu par action 
 """
 name = list()
 action_value = list()  #    wts
@@ -66,32 +66,32 @@ num_of_actions = len(action_value)  #   h
 
 """
 Création du tableau:
-table = une liste qui contient autant de listes qu'il y a d'actions, et ces listes contiennent autant
-d'élément que la capaciter maximum.
-Le tableau a  "lignes * nb-actions " et "colonnes * capaciter"
+table = une liste qui contient autant de listes qu'il y a d'actions et ces listes contiennent autant
+d'éléments que la capacité maximum.
+Le tableau :  "lignes * nb-actions " et "colonnes * capacité"
 """
 table = [[0 for i in range(max_value)] for elem in range(num_of_actions)]
 
 """
-La boucle est créer à partir de la liste "action_value" et va itérer sur chaque lignes
+La boucle est créée à partir de la liste "action_value" et va itérer sur chaque lignes
 """
 for index in range(len(action_value)):
 
-    """La boucle est créer à partir de la capacité maximal et va itérer sur chaque colonnes"""
+    """La boucle est créée à partir de la capacité maximale et va itérer sur chaque colonnes"""
     for value in range(max_value):
 
-        """Si la valeur de l'action est plus élevé que la capacité de la colonne, 
-           On récupére la valeur de la cellule précédente(de la colonne)"""
+        """Si la valeur de l'action est plus élevée que la capacité de la colonne, 
+           On récupère la valeur de la cellule précédente (de la colonne)"""
         if action_value[index] > value:
             table[index][value] = table[index - 1][value]
             continue
 
-        """Si la valeur de l'action est < a la capacité.
-           prior_value = l'élement précédent de la colonne
-           new_option_best = la valeur de l'action en cours de traitement + la valeur """
+        """Si la valeur de l'action est < à la capacité.
+           prior_value = l'élément précédent de la colonne
+           new_option_best = la valeur de l'action en cours de traitement + la valeur............. """
         prior_value = table[index - 1][value]
         new_option_best = benefit[index] + table[index - 1][value - action_value[index]]
-        print ("\n\n\n" "\nbenefit[index] :", benefit[index], "\n+","\ntable[index - 1] :",table[index - 1], "\n\nvalue :",value, "\n-", "\naction_value[index] : ",action_value[index],"\nvalue - action_value[index] :", value - action_value[index],"\n=" "\n\nnew_option_best :",new_option_best)
+        print ("\n\n\n" "\nbenefit[index] :", benefit[index], "\n+","\ntable[index - 1] :",table[index - 1], "\n\nvalue :",value, "\n-", "\naction_value[index] : ",action_value[index],"\nvalue - action_value[index] :", value - action_value[index],"\n=" "new_option_best :",new_option_best)
 
         table[index][value] = max(prior_value, new_option_best)
         #print(prior_value, new_option_best)
@@ -100,3 +100,10 @@ for index in range(len(action_value)):
 result = max([x for y in table for x in y])
 print(table)
 print("--- %s seconds ---" % (time.time() - start_time))
+
+"""
+                                [0, 1, 1, 1, 1, 1] 
+                                [0, 1, 1, 4, 5, 5]
+                                [0, 1, 1, 4, 5, 6] 
+                                [0, 1, 1, 4, 5, 7]
+"""
