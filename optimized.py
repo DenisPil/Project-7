@@ -1,11 +1,11 @@
 import time
 
 actions = [
-    ('action-1',2000, 0.05),
-    ('action-2',3000, 0.2),
-    ('action-3',5000, 0.15),
-    ('action-4',7000, 0.2),
-    ('action-5',6000, 0.17),
+    ('action-1', 1, 1),
+    ('action-2', 3, 4),
+    ('action-3', 4, 5),
+    ('action-4', 5, 7),]
+"""    ('action-5',6000, 0.17),
     ('action-6',8000, 0.25),
     ('action-7',2200, 0.07),
     ('action-8',2600, 0.11),
@@ -21,43 +21,82 @@ actions = [
     ('action-18',1000, 0.14),
     ('action-19',2400, 0.21),
     ('action-20',11400, 0.18)
-    ]
+    ]"""
 
+
+"""Calcul le temps d'execution :
+start_time = représente le début du programme
+
+"""
 start_time = time.time()
+
+
+"""
+Création des listes:
+name = le nom des actions
+action_value = la valeur des actions
+benefit = le bénéfice attendu part action 
+"""
 name = list()
 action_value = list()  #    wts
-benefit = list() #vals
-capacity = 50000
+benefit = list()       #    vals
 
+
+"""
+Boucle qui va extraire les informations de la liste de tuple  "actions"
+et ajouter les données aux listes
+"""
 for i in range(len(actions)):
     n, v, p = actions[i]
     benef = int(v * p)
-    benefit.append(benef)
+    #benefit.append(benef)
+    benefit.append(p)
     name.append(n)
     action_value.append(v)
 
-max_value = capacity + 1  # w
+"""
+Création des variables :
+capacity = le maximum pour acheter des actions
+max_value = représente les colonnes du tableau
+num_of_actions = le nombre d'actions
+"""
+capacity = 5
+max_value = capacity + 1  #   w
 num_of_actions = len(action_value)  #   h
+
+"""
+Création du tableau:
+table = une liste qui contient autant de listes qu'il y a d'actions, et ces listes contiennent autant
+d'élément que la capaciter maximum.
+Le tableau a  "lignes * nb-actions " et "colonnes * capaciter"
+"""
 table = [[0 for i in range(max_value)] for elem in range(num_of_actions)]
 
-for index in range(len(benefit)):
+"""
+La boucle est créer à partir de la liste "action_value" et va itérer sur chaque lignes
+"""
+for index in range(len(action_value)):
 
+    """La boucle est créer à partir de la capacité maximal et va itérer sur chaque colonnes"""
     for value in range(max_value):
-        # if the item value more than the capacity at that column?
+
+        """Si la valeur de l'action est plus élevé que la capacité de la colonne, 
+           On récupére la valeur de la cellule précédente(de la colonne)"""
         if action_value[index] > value:
             table[index][value] = table[index - 1][value]
-
             continue
-        
-        # if the value of the item < capacity
-        prior_value = table[index - 1][value]
-        #                 benefit of current item  + val of remaining value
-        new_option_best = benefit[index] + table[index - 1][value - action_value[index]]
-        table[index][value] = max(prior_value, new_option_best)
-        #actions_name = 
 
-print(prior_value,"priior")
-print(table[index][value],'table')
+        """Si la valeur de l'action est < a la capacité.
+           prior_value = l'élement précédent de la colonne
+           new_option_best = la valeur de l'action en cours de traitement + la valeur """
+        prior_value = table[index - 1][value]
+        new_option_best = benefit[index] + table[index - 1][value - action_value[index]]
+        print ("\n\n\n" "\nbenefit[index] :", benefit[index], "\n+","\ntable[index - 1] :",table[index - 1], "\n\nvalue :",value, "\n-", "\naction_value[index] : ",action_value[index],"\nvalue - action_value[index] :", value - action_value[index],"\n=" "\n\nnew_option_best :",new_option_best)
+
+        table[index][value] = max(prior_value, new_option_best)
+        #print(prior_value, new_option_best)
+        #print(table)
+          
 result = max([x for y in table for x in y])
-print(result)
+print(table)
 print("--- %s seconds ---" % (time.time() - start_time))
