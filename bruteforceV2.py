@@ -41,11 +41,12 @@ for i in range(len(actions)):
 
 
 def force_brut():
-
+    compteur = 0
     for v in itertools.product([0, 1], repeat=20):
         list_binary = np.array([v])
         list_calcul_benef = list_binary * benefit
-
+        compteur += 1
+        print(compteur)
         for i in list_calcul_benef:
             sum_of_profits = sum(i)
             sum_of_benefit.append(sum_of_profits)
