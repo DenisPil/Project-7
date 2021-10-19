@@ -16,7 +16,14 @@ def knapSack(capacity, actions_value, benefit, max_value):
             elif actions_value[index-1] <= value:
                 table[index][value] = max(benefit[index-1] + table[index-1][value-actions_value[index-1]], table[index-1][value])
                 print("premier print", table[index][value])
-                gg.append(index - 1)
+                toto = 0
+                while toto != len(table):
+                    toto +=1
+                    #print(benefit[index] + table[index - 1][value - action_value[index]])
+                    if table[index][value] ==table[index -toto][value]:
+
+                        gg.append(index)
+
             else:
                 table[index][value] = table[index-1][value]
                 print('deuxieme print', table[index][value])
