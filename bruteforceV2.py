@@ -4,7 +4,7 @@ import time
 
 actions = [
     ('action-1',2000, 0.05),
-    ('action-2',3000, 0.2),
+    ('action-2',3000, 0.1),
     ('action-3',5000, 0.15),
     ('action-4',7000, 0.2),
     ('action-5',6000, 0.17),
@@ -41,12 +41,11 @@ for i in range(len(actions)):
 
 
 def force_brut():
-    compteur = 0
+
     for v in itertools.product([0, 1], repeat=20):
         list_binary = np.array([v])
         list_calcul_benef = list_binary * benefit
-        compteur += 1
-        print(compteur)
+
         for i in list_calcul_benef:
             sum_of_profits = sum(i)
             sum_of_benefit.append(sum_of_profits)
@@ -74,7 +73,9 @@ def best_combiantion():
             result.append((n, actions_sum, elem[0]))
             #break    
     sorted_result = (sorted(result, key=lambda t:t[1], reverse=True))
-    print("Pour un total de :", int(sorted_result[0][1] / 100), "€", "les actions les plus rentable sont :", (sorted_result[0][0]), "pour un bénéfice de :", sorted_result[0][2]/100, "€" )
+    print("Pour un total de :", int(sorted_result[0][1] / 100), "€")
+    print("Les actions les plus rentables sont :", (sorted_result[0][0]))
+    print("Pour un bénéfice de :", sorted_result[0][2] / 100, "€" )
 
 
 start_time = time.time()
