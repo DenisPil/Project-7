@@ -1,8 +1,5 @@
 import time
-# A Dynamic Programming based Python 
-# Program for 0-1 Knapsack problem
-# Returns the maximum value that can 
-# be put in a knapsack of capacity W
+
 start_time = time.time()
 gg = list()
 def knapSack(capacity, actions_value, benefit, max_value):
@@ -28,8 +25,7 @@ def knapSack(capacity, actions_value, benefit, max_value):
                 table[index][value] = table[index-1][value]
                 print('deuxieme print', table[index][value])
     return table[max_value][capacity]
-  
-# Driver program to test above function
+
 
 """         poid   benef   Pmax =   0  1  2  3  4  5 
 
@@ -37,6 +33,7 @@ def knapSack(capacity, actions_value, benefit, max_value):
      B         3       4           [0, 1, 1, 4, 5, 5]
      C         4       5           [0, 1, 1, 4, 5, 6] 
      D         5       7           [0, 1, 1, 4, 5, 7]
+
 """""
 
 
