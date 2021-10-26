@@ -2,56 +2,66 @@ import time
 import csv
 
 
-actions = list()
-benefit = list()
-f= open ("actions_premiere_partie.csv")
+start_time = time.time()
+list_actions = list()
+name = list()
+actions = list()  #    wts
+benefit = list() #vals
+
+f = open ("actions_premiere_partie.csv")
 myReader = csv.reader(f)
 for row in myReader:
-    actions.append(row)
-del actions[0]
+    list_actions.append(row)
+del list_actions[0]
 
-start_time = time.time()
-name = list()
-action_value = list()  #    wts
-benefit = list() #vals
-capacity = 50000
-
-for i in range(len(actions)):
-    n, v, p = actions[i]
+for i in range(len(list_actions)):
+    n, v, p = list_actions[i]
     value = int(v) * 100
     benef = value * (int(p) / 100)
     benefit.append(benef)
     name.append(n)
-    action_value.append(value)
+    actions.append(value)
 
+cap = 50000
+capacity = cap + 1
+num_of_actions = len(actions)
 
+table = [[0 for i in range(capacity)] for elem in range(num_of_actions)]
+index = [["" for i in range(capacity)] for elem in range(num_of_actions)]
+for row in range(len(actions)):
+    for column in range(capacity):
 
-max_value = capacity + 1  # w
-num_of_actions = len(action_value)  #   h
-table = [[0 for i in range(max_value)] for elem in range(num_of_actions)]
+        if actions[row] > column:
+            table[row][column] = table[row - 1][column]
+            index[row][column] = index[row - 1][column]
 
-for index in range(len(benefit)):
-
-    for value in range(max_value):
-
-        if action_value[index] > value:
-            table[index][value] = table[index - 1][value]
             continue
+        prior_value = table[row - 1][column]
+        new_option_best = benefit[row] + table[row - 1][column - actions[row]]
 
-        prior_value = table[index - 1][value]
-        new_option_best = benefit[index] + table[index - 1][value - action_value[index]]
-        table[index][value] = max(prior_value, new_option_best)
-        #print ("\n\n\n" "\nbenefit[index] :", benefit[index], "\n+","\ntable[index - 1] :","trop long", "\n\nvalue :",value, "\n-", "\naction_value[index] : ",action_value[index],"\nvalue - action_value[index] :", value - action_value[index],"\n=" "new_option_best :",new_option_best)
+        prior_index = index[row - 1][column]
+        best_index = index[row - 1][column - actions[row]]
+        new_index_best = str(row) + " " + str(best_index)
 
+        if prior_value < new_option_best :
+            table[row][column] = new_option_best
+            index[row][column] = new_index_best
+        else:
+            table[row][column] = prior_value
+            index[row][column] = prior_index
 
 result = max([x for y in table for x in y])
-print(result)
-print("--- %s seconds ---" % (time.time() - start_time)) 
+len_index = len(index) - 1
+rez = index[len_index][-1].split()
 
-"""         poid   benef   Pmax =   0  1  2  3  4  5 
+result_name = list()
+result_price = list()
+for i in rez:
+    elem = int(i)
+    result_name.append(name[elem])
+    result_price.append(actions[elem])
 
-     A         1       1           [0, 1, 1, 1, 1, 1] 
-     B         3       4           [0, 1, 1, 4, 5, 5]
-     C         4       5           [0, 1, 1, 4, 5, 6] 
-     D         5       7           [0, 1, 1, 4, 5, 7]
-"""""
+print("Pour un total de :", sum(result_price) / 100, "€")
+print("Les actions les plus rentables sont :", ', '.join(result_name))
+print("Pour un bénéfice de :", result / 100, "€" )
+print("--- %s seconds ---" % (time.time() - start_time))
