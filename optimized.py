@@ -81,18 +81,18 @@ for ligne in range(len(actions)):
         prior_value = l'élément précédent de la colonne
         new_option_best = la valeur de l'action en cours de traitement + la valeur............. 
         """
-        prior_colonne = tableau[ligne - 1][colonne]
+        prior_value = tableau[ligne - 1][colonne]
         new_option_best = benefit[ligne] + tableau[ligne - 1][colonne - actions[ligne]]
 
         prior_name = nomtab[ligne - 1][colonne]
         best = ', ' + nomtab[ligne - 1][colonne - actions[ligne]]
         new_name_best = name[ligne] + best
 
-        if prior_colonne < new_option_best :
+        if prior_value < new_option_best :
             tableau[ligne][colonne] = new_option_best
             nomtab[ligne][colonne] = new_name_best
         else:
-            tableau[ligne][colonne] = prior_colonne
+            tableau[ligne][colonne] = prior_value
             nomtab[ligne][colonne] = prior_name
 
 result = max([x for y in tableau for x in y])
