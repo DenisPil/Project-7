@@ -1,30 +1,9 @@
 import numpy as np
 import itertools
 import time
+import csv
 
-actions = [
-    ('action-1',2000, 0.05),
-    ('action-2',3000, 0.1),
-    ('action-3',5000, 0.15),
-    ('action-4',7000, 0.2),
-    ('action-5',6000, 0.17),
-    ('action-6',8000, 0.25),
-    ('action-7',2200, 0.07),
-    ('action-8',2600, 0.11),
-    ('action-9',4800, 0.13),
-    ('action-10',3400, 0.27),
-    ('action-11',4200, 0.17),
-    ('action-12',11000, 0.09),
-    ('action-13',3800, 0.23),
-    ('action-14',1400, 0.01),
-    ('action-15',1800, 0.03),
-    ('action-16',800, 0.08),
-    ('action-17',400, 0.12),
-    ('action-18',1000, 0.14),
-    ('action-19',2400, 0.21),
-    ('action-20',11400, 0.18)
-    ]
-
+list_actions = list()
 benefit = list()
 name = list()
 action_value = list()
@@ -32,12 +11,20 @@ sum_of_benefit = list()
 actions_link_to_profit = list()
 sum_of_actions = list()
 
-for i in range(len(actions)):
-    n, v, p = actions[i]
-    benef = int(v * p)
+
+f = open ("actions_premiere_partie.csv")
+myReader = csv.reader(f)
+for row in myReader:
+    list_actions.append(row)
+del list_actions[0]
+
+for i in range(len(list_actions)):
+    n, v, p = list_actions[i]
+    value = int(v) * 100
+    benef = value * (int(p) / 100)
     benefit.append(benef)
     name.append(n)
-    action_value.append(v)
+    action_value.append(value)
 
 
 def force_brut():
