@@ -12,10 +12,8 @@ f = open ("dataset2_Python+P7.csv")
 myReader = csv.reader(f, delimiter=',')
 for col in myReader:
     if float(col[1]) > 0:
-        v = float(col[1])
-        p = float(col[2])
-        value = (v * 100)
-        benef = value * (p / 100)
+        value = (float(col[1]) * 100)
+        benef = value * (float(col[2]) / 100)
         name.append(col[0])
         actions.append(int(value))
         profit.append(benef)
@@ -24,6 +22,7 @@ for col in myReader:
 cap = 50000
 capacity = cap + 1
 num_of_actions = len(actions)
+
 def knapSack(capacity, actions, profit, num_of_actions, name):
     table = [[0 for i in range(capacity)] for elem in range(num_of_actions)]
     index = [["" for i in range(capacity)] for elem in range(num_of_actions)]
