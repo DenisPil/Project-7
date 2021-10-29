@@ -11,21 +11,16 @@ sum_of_benefit = list()
 actions_link_to_profit = list()
 sum_of_actions = list()
 
-
 f = open ("actions_premiere_partie.csv")
-myReader = csv.reader(f)
-for row in myReader:
-    list_actions.append(row)
-del list_actions[0]
-
-for i in range(len(list_actions)):
-    n, v, p = list_actions[i]
-    value = int(v) * 100
-    benef = value * (int(p) / 100)
-    benefit.append(benef)
-    name.append(n)
-    action_value.append(value)
-
+myreader = csv.reader(f, delimiter=',')
+next(myreader)
+for col in myreader:
+    if float(col[1]) > 0:
+        value = (float(col[1]) * 100)
+        benef = value * (float(col[2]) / 100)
+        name.append(col[0])
+        action_value.append(value)
+        benefit.append(benef)
 
 def force_brut():
 
