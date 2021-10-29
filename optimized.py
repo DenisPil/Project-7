@@ -1,113 +1,79 @@
-import time
 import csv
+import time
 
-"""
-Calcul le temps d'execution :
-start_time = représente le début du programme
-"""
-start_time = time.time()
 
-"""
-Création des listes:
-name = le nom des actions
-action_value = la valeur des actions
-benefit = le bénéfice attendu par action 
-"""
+def dataset_choice():
+    print("Choisir :\n 1 : dataset_1\n 2 : dataset_2\n 3 : actions première partie\n 4 : nouveau dataset :")
+    dataset = input("Entrez 1, 2, 3 ou 4 : ")
+    result = ""
+    if dataset == "1":
+        result = "dataset1_Python+P7.csv"
+    if dataset == "2":
+        result = "dataset2_Python+P7.csv"
+    if dataset == "3":
+        result = "actions_premiere_partie.csv"
+    if dataset == "4":
+        result = input("Nom du fichier :")
+  
+    return result
+
+def knapSack(capacity, actions, benefit, num_of_actions, name):
+
+    table = [[0 for w in range(capacity + 1)]for i in range(num_of_actions + 1)]
+    names_result = list()
+    prices_result = list()
+
+    for row in range(num_of_actions + 1):
+        for column in range(capacity + 1):
+            if row == 0 or column == 0:
+                table[row][column] = 0
+            elif actions[row - 1] <= column:
+                table[row][column] = max(benefit[row - 1]
+                  + table[row - 1][column - actions[row - 1]],
+                               table[row - 1][column])
+            else:
+                table[row][column] = table[row - 1][column]
+
+    res = table[num_of_actions][capacity]
+    result = res
+    cap = capacity
+
+    for i in range(num_of_actions, 0, -1):
+        if res <= 0:
+            break
+        if res == table[i - 1][cap]:
+            continue
+        else:
+            prices_result.append(actions[i - 1])
+            names_result.append(name[i - 1])
+
+            res = res - benefit[i - 1]
+            cap = cap - actions[i - 1]
+
+    print("Pour un total de :", sum(prices_result) / 100, "€")
+    print("Un bénéfice de :","%.2f" % (result / 100), "€")
+    print("Les actions les plus rentables sont :", ', '.join(names_result))
+
+
 list_actions = list()
 name = list()
 actions = list()
-benefit = list()
+profit = list()
+capacity = 50000
 
+f = open (dataset_choice())
+start_time = time.time()
+myreader = csv.reader(f, delimiter=',')
+next(myreader)
+for col in myreader:
+    if float(col[1]) > 0:
+        value = (float(col[1]) * 100)
+        benef = value * (float(col[2]) / 100)
+        name.append(col[0])
+        actions.append(round(value))
+        profit.append(round(benef))
 
-f = open ("actions_premiere_partie.csv")
-myReader = csv.reader(f)
-for row in myReader:
-    list_actions.append(row)
-del list_actions[0]
-
-
-"""
-Boucle qui va extraire les informations de la liste de tuple  "actions"
-et ajouter les données aux listes
-"""
-for i in range(len(list_actions)):
-    n, v, p = list_actions[i]
-    value = int(v) * 100
-    benef = value * (int(p) / 100)
-    benefit.append(benef)
-    name.append(n)
-    actions.append(value)
-
-
-"""
-Création des variables :
-capacity = le maximum pour acheter des actions
-max_value = représente les colonnes du tableau
-num_of_actions = le nombre d'actions
-"""
-cap = 50000
-capacity = cap + 1
 num_of_actions = len(actions)
 
-
-"""
-Création du tableau:
-table = une liste qui contient autant de listes qu'il y a d'actions et ces listes contiennent autant
-d'éléments que la capacité maximum.
-Le tableau :  "lignes * nb-actions " et "colonnes * capacité"
-"""
-table = [[0 for i in range(capacity)] for elem in range(num_of_actions)]
-index = [["" for i in range(capacity)] for elem in range(num_of_actions)]
-
-"""
-La boucle est créée à partir de la liste "action_value" et va itérer sur chaque lignes
-"""
-for row in range(len(actions)):
-
-    """La boucle est créée à partir de la capacité maximale et va itérer sur chaque colonnes"""
-    for column in range(capacity):
-
-        """
-        Si la valeur de l'action est plus élevée que la capacité de la colonne, 
-        On récupère la valeur de la cellule précédente (de la colonne)
-        """
-        if actions[row] > column:
-            table[row][column] = table[row - 1][column]
-            index[row][column] = index[row - 1][column]
-
-            continue
-        """
-        Si la valeur de l'action est < à la capacité.
-        prior_value = l'élément précédent de la colonne
-        new_option_best = la valeur de l'action en cours de traitement + la valeur............. 
-        """
-        prior_value = table[row - 1][column]
-        new_option_best = benefit[row] + table[row - 1][column - actions[row]]
-
-        if prior_value < new_option_best :
-            table[row][column] = new_option_best
-            best_index = index[row - 1][column - actions[row]]
-            new_index_best = str(row) + " " + str(best_index)
-            index[row][column] = new_index_best
-        else:
-            table[row][column] = prior_value
-            prior_index = index[row - 1][column]
-            index[row][column] = prior_index
-
-#result = max([x for y in table for x in y])
-len_index = len(index) - 1
-rez = index[len_index][-1].split()
-
-result_name = list()
-result_price = list()
-gg = list()
-for i in rez:
-    elem = int(i)
-    result_name.append(name[elem])
-    result_price.append(actions[elem])
-    gg.append(benefit[elem])
-
-print("Pour un total de :", sum(result_price) / 100, "€")
-print("Les actions les plus rentables sont :", ', '.join(result_name))
-print("Pour un bénéfice de :", sum(gg) / 100, "€" )
-print("--- %s seconds ---" % (time.time() - start_time))
+knapSack(capacity, actions, profit, num_of_actions, name)
+print("--- %.2f seconds ---" % (time.time() - start_time))
